@@ -29,6 +29,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ContactsActivity" />
+        <activity android:name=".QuestionActivity" />
+        <activity android:name=".ResultActivity" />
     </application>
 
 
