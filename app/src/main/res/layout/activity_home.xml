@@ -8,14 +8,8 @@
     android:background="#FFFFFF"
     tools:context=".HomeActivity">
 
-    <View
-        android:id="@+id/rectangle_1"
-        android:layout_width="0dp"
-        android:layout_height="84dp"
-        android:background="#000000"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <include layout="@layout/activity_frame"
+        android:elevation="10dp"/>
 
 
     <!-- MYAPP by YL & SL -->
