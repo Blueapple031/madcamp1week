@@ -77,10 +77,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        //이게 반드시 있어야함.ㅇㅇ 진짜 없으면 인생망함
+        showCurrentLocation();
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
-
+        // 위치 클라이언트 초기화
         return rootView;
     }
 

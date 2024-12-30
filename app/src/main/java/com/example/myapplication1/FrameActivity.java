@@ -27,14 +27,14 @@ public class FrameActivity extends AppCompatActivity{
         ImageButton btnGallery = findViewById(R.id.gallery);
 
         if (savedInstanceState == null) {
-            replaceFragment(new HomeFragment());
+            replaceFragment(new MapFragment());
         }
 
     //Home 버튼 클릭 시 HomeActivity로 이동
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new HomeFragment());
+                replaceFragment(new MapFragment());
             }
         });
 //        btnMenu.setOnClickListener(new View.OnClickListener() {
