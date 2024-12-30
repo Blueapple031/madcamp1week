@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My Application1"
+rootProject.name = "Dont Starve"
 include(":app")
  
