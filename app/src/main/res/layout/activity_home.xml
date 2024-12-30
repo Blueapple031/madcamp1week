@@ -5,11 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#FFFFFF"
-    tools:context=".HomeActivity">
-
-    <include layout="@layout/activity_frame"
-        android:elevation="10dp"/>
+    android:background="#FFFFFF">
 
 
     <!-- MYAPP by YL & SL -->
@@ -113,6 +109,7 @@
         android:layout_marginEnd="20dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

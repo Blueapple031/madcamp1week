@@ -1,11 +1,19 @@
 package com.example.myapplication1;
-import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,29 +23,46 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
 
-public class ResultActivity extends AppCompatActivity {
+public class ResultFragment extends Fragment {
 
     private TextView resultText;
     private ProgressBar loadingBar;
     private TextView mealResult;
+    private TextView mealLocation;
+    private ImageView iconimage;
+    private Button backButton;
+    private Button mapButton;
 
     private double[] userScores; // 사용자 점수 배열
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_result);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_result, container, false);
 
         // View 연결
-        resultText = findViewById(R.id.resultText);
-        loadingBar = findViewById(R.id.loadingBar);
-        mealResult = findViewById(R.id.mealResult);
+        resultText = view.findViewById(R.id.resultText);
+        loadingBar = view.findViewById(R.id.loadingBar);
+        mealResult = view.findViewById(R.id.mealResult);
+        iconimage = view.findViewById(R.id.iconimage);
+        backButton = view.findViewById(R.id.backButton);
+        mapButton = view.findViewById(R.id.mapButton);
+        mealLocation = view.findViewById(R.id.mealLocation);
+
+        backButton.setVisibility(Button.INVISIBLE);
+        mapButton.setVisibility(Button.INVISIBLE);
+        mealResult.setVisibility(TextView.INVISIBLE);
+        mealLocation.setVisibility(TextView.INVISIBLE);
+
+        iconimage.setVisibility(ImageView.INVISIBLE);
 
         // Intent에서 사용자 점수 받기
-        userScores = getIntent().getDoubleArrayExtra("userScores");
-
+        Bundle arguments = getArguments();
+        if(arguments != null){
+            userScores = arguments.getDoubleArray("userScores");
+        }
         // 3초 동안 로딩 후 결과 표시
         new Handler().postDelayed(this::showResult, 3000);
+        return view;
     }
 
     private void showResult() {
@@ -50,7 +75,22 @@ public class ResultActivity extends AppCompatActivity {
         // 결과 표시
         resultText.setText("추천 학식 결과:");
         mealResult.setText(recommendedMeal);
+        backButton.setVisibility(Button.VISIBLE);
+        mapButton.setVisibility(Button.VISIBLE);
         mealResult.setVisibility(TextView.VISIBLE);
+        mealLocation.setVisibility(TextView.VISIBLE);
+        iconimage.setVisibility(ImageView.VISIBLE);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                QuestionFragment questionFragment = new QuestionFragment();
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, questionFragment);
+                transaction.commit();
+            }
+        });
     }
 
     private String calculateMealRecommendation(double[] scores) {
@@ -112,10 +152,11 @@ public class ResultActivity extends AppCompatActivity {
     private String loadJsonData() {
         // JSON 학식 데이터를 String으로 반환
         String json = null;
+        AssetManager assetManager= getContext().getAssets();
 
         try {
             // assets 폴더에서 menus.json 파일 열기
-            InputStream inputStream = getAssets().open("menus.json");
+            InputStream inputStream = assetManager.open("menus.json");
 
             // InputStream을 String으로 변환
             int size = inputStream.available();

@@ -5,8 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".ContactsActivity">
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/Contacts"
@@ -34,5 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:clipToPadding="false"
         android:scrollbars="vertical" />
+
+    <include layout="@layout/activity_frame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

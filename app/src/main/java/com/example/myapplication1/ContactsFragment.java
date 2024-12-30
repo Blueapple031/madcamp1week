@@ -1,7 +1,14 @@
 package com.example.myapplication1;
 
+import android.content.res.AssetManager;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,25 +22,29 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsActivity extends AppCompatActivity {
+public class ContactsFragment extends Fragment {
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contacts);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_contacts, container, false);
 
         // JSON 파일에서 연락처 읽기
         List<Contact> contactList = readContactsFromJson();
 
         // RecyclerView 초기화
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ContactAdapter(contactList));
+//        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setAdapter(new ContactAdapter(contactList));
+
+        return view;
     }
+
+
 
     private List<Contact> readContactsFromJson() {
         List<Contact> contactList = new ArrayList<>();
+        AssetManager assetManager= getContext().getAssets();
         try {
-            InputStream inputStream = getAssets().open("contacts.json");
+            InputStream inputStream = assetManager.open("contacts.json");
             int size = inputStream.available();
             byte[] buffer = new byte[size];
             inputStream.read(buffer);

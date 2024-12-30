@@ -6,11 +6,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@null">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/guideline"/>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.92" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88" />
+
     <View
         android:id="@+id/rectangle_5"
         android:layout_width="match_parent"
-        android:layout_height="69dp"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         android:background="#000000"
         tools:ignore="MissingConstraints" />
@@ -18,81 +48,82 @@
     <View
         android:id="@+id/rectangle_6"
         android:layout_width="match_parent"
-        android:layout_height="92dp"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline2"
         android:background="#FFFFFF"
         tools:ignore="MissingConstraints" />
 
-    <Button
+    <ImageButton
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/home_03"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="11dp"
-        android:background="@drawable/home"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:src="@drawable/home"
         />
 
-    <Button
+    <ImageButton
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/menu_03"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="358dp"
-        android:layout_marginTop="11dp"
-        android:background="@drawable/menu"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:src="@drawable/menu"
         />
 
-    <Button
+    <ImageButton
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gallery"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline2"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="335dp"
-        android:layout_marginBottom="11dp"
-        android:background="@drawable/image"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:src="@drawable/image"
         />
-    <Button
+    <ImageButton
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/contacts"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline2"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="11dp"
-        android:background="@drawable/image_avatar"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:src="@drawable/image_avatar"
         />
 
-    <View
-        android:id="@+id/ellipse_1"
-        android:layout_width="134dp"
-        android:layout_height="134dp"
+    <ImageButton
+        android:id="@+id/nubzukki"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline3"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         android:layout_marginBottom="-10dp"
         android:background="@drawable/ellipse_1"
+        android:src="@drawable/frame_animation"
+        android:clipToOutline="true"
         />
-    <Button
-        android:id="@+id/nubzukki"
-        android:layout_width="99dp"
-        android:layout_height="88dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/img"
-        />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

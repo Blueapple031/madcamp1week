@@ -3,21 +3,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ResultActivity">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
 
     <!-- "오늘 당신의 학식은..." 문구 -->
+
     <TextView
         android:id="@+id/resultText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="오늘 당신의 학식은..."
-        android:textSize="24sp"
+        android:fontFamily="@font/bmhannapro"
+        android:textColor="@color/black"
+        android:textSize="30sp"
         android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="100dp" />
+        />
 
     <!-- ProgressBar -->
     <ProgressBar
@@ -25,22 +69,85 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/resultText"
+        android:indeterminateDrawable="@drawable/black_progress_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 학식 결과 표시 -->
+    <TextView
+        android:id="@+id/mealLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="학식 위치"
+        android:textSize="25sp"
+        android:fontFamily="@font/bmhannapro"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline3" />
+
     <TextView
         android:id="@+id/mealResult"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="20sp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/loadingBar"
-        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        android:text="메뉴 이름"
+        android:textSize="30sp"
+        android:fontFamily="@font/bmhannapro"
+        android:textColor="@color/black"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mealLocation" />
+
+    <ImageView
+        android:id="@+id/iconimage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="5dp"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/resultText"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        android:src="@drawable/icon"
+        />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="다시 하기"
+        android:background="@null"
+        android:fontFamily="@font/bmjua"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:backgroundTint="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/mealResult"
+        app:layout_constraintStart_toEndOf="@id/guideline4"
+        app:layout_constraintEnd_toStartOf="@id/guideline5"
+        tools:ignore="MissingConstraints" />
+
+    <!-- 선택지 버튼 2 -->
+    <Button
+        android:id="@+id/mapButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="지도 보기"
+        android:fontFamily="@font/bmjua"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:backgroundTint="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/backButton"
+        app:layout_constraintStart_toEndOf="@id/guideline4"
+        app:layout_constraintEnd_toStartOf="@id/guideline5"
+        tools:ignore="MissingConstraints" />
+
+<!--    <include layout="@layout/activity_frame" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
