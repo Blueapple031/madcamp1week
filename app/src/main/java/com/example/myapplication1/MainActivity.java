@@ -9,6 +9,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.R;
 import com.example.myapplication1.adapters.ContactAdapter;
 import com.example.myapplication1.models.Contact;
 import org.json.JSONArray;

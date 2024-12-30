@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myapplication.R;
+
 public class FrameActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
