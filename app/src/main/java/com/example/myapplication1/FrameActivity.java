@@ -1,11 +1,9 @@
 package com.example.myapplication1;
-import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.FrameLayout;
-import android.widget.Toast;
+
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
@@ -59,16 +57,35 @@ public class FrameActivity extends AppCompatActivity{
         btnContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new ContactsFragment());
+                ContactsFragment contactsFragment = new ContactsFragment();
+
+                getSupportFragmentManager().beginTransaction()
+                        // 대각선 애니메이션 (위쪽 오른쪽에서 아래쪽 왼쪽으로)
+                        .setCustomAnimations(
+                                R.anim.slide_in_diagonal_contacts,   // Fragment 등장 애니메이션
+                                R.anim.slide_out_diagnal_contacts   // Fragment 사라지는 애니메이션
+                        )
+                        .replace(R.id.fragment_container, contactsFragment)
+                        .addToBackStack(null)  // 백 스택에 추가 (뒤로 가기 기능)
+                        .commit();
             }
         });
-//        btnGallery.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(FrameActivity.this, HomeActivity.class); //Gallery 합치면서 넣어야 함!!!
-//                startActivity(intent);
-//            }
-//        });
+        btnGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GalleryFragment galleryFragment = new GalleryFragment();
+
+                getSupportFragmentManager().beginTransaction()
+                        // 대각선 애니메이션 (위쪽 오른쪽에서 아래쪽 왼쪽으로)
+                        .setCustomAnimations(
+                                R.anim.slide_in_diagonal_gallery,   // Fragment 등장 애니메이션
+                                R.anim.slide_out_diagonal_gallery   // Fragment 사라지는 애니메이션
+                        )
+                        .replace(R.id.fragment_container, galleryFragment)
+                        .addToBackStack(null)  // 백 스택에 추가 (뒤로 가기 기능)
+                        .commit();
+            }
+        });
     }
     // Fragment 전환 함수
     private void replaceFragment(Fragment fragment) {

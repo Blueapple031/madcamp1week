@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class ResultFragment extends Fragment {
@@ -86,6 +87,7 @@ public class ResultFragment extends Fragment {
         resultText.setText("추천 학식 결과:");
         mealResult.setText(recommendedMeal);
         mealLocation.setText(meallocation + " " + mealrestaurant);
+        iconimage.setImageResource(getDrawableResourceId(mapLocation()));
         backButton.setVisibility(Button.VISIBLE);
         mapButton.setVisibility(Button.VISIBLE);
         mealResult.setVisibility(TextView.VISIBLE);
@@ -99,9 +101,76 @@ public class ResultFragment extends Fragment {
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, questionFragment);
+                transaction.setCustomAnimations(
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right,
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right
+                );
                 transaction.commit();
             }
         });
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapFragment mapFragment = new MapFragment();
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, mapFragment);
+                transaction.setCustomAnimations(
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right,
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right
+                );
+                transaction.commit();
+            }
+        });
+    }
+    private int getDrawableResourceId(String location) {
+        // location에 맞는 이미지 리소스 ID를 찾아 반환
+        // 예: "park"에 해당하는 이미지가 drawable 폴더에 있어야 함.
+        return getResources().getIdentifier(location, "drawable", requireContext().getPackageName());
+    }
+
+    private String mapLocation(){
+        String picturename="";
+        if(Objects.equals(meallocation, "카이마루")){
+            picturename="kaimaru";
+        }
+        else if(Objects.equals(meallocation, "태울관")){
+            picturename="taeul";
+        }
+        else if(Objects.equals(meallocation, "장영신학생회관")){
+            picturename="jangyungsin";
+        }
+        else if(Objects.equals(meallocation, "정문술빌딩")){
+            picturename="jungmun_building";
+        }
+        else if(Objects.equals(meallocation, "동측식당")){
+            picturename="professor_castle";
+        }
+        else if(Objects.equals(meallocation, "서측식당")){
+            picturename="west_dining";
+        }
+        else if(Objects.equals(meallocation, "매점 건물")){
+            picturename="maejum";
+        }
+        else if(Objects.equals(meallocation, "세종관")){
+            picturename="sejong";
+        }
+        else if(Objects.equals(meallocation, "희망/다솜관")){
+            picturename="hope_dasom";
+        }
+        else if(Objects.equals(meallocation, "나들/여울관")){
+            picturename="nadle_yuul";
+        }
+        else if(Objects.equals(meallocation, "미르/나래관")){
+            picturename="mir_narae";
+        }
+
+        return picturename;
     }
 
     private String calculateMealRecommendation(double[] scores) {
@@ -208,6 +277,10 @@ public class ResultFragment extends Fragment {
         for (int i = 0; i < jsonArray.length(); i++) {
             result[i] = jsonArray.getInt(i);
         }
+        //여기서는 첫 번째 인수인 가격을 -5와 5 사이로 만들것임.
+        int cost=result[0];
+        result[0]=(cost - 25) * ((5 - (-5)) / (200 - 25)) + (-5);
+        result[0]=-result[0];
         return result;
     }
 
