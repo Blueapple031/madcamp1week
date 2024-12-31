@@ -18,7 +18,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.R;
 import com.example.myapplication1.models.Building;
+import com.example.myapplication1.models.Menu;
 import com.example.myapplication1.repository.BuildingRepository;
+import com.example.myapplication1.repository.MenuRepository;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +41,7 @@ public class ResultFragment extends Fragment {
 
     private double[] userScores;
     private List<JSONObject> menuList = new ArrayList<>();
-    private List<JSONObject> topMenus = new ArrayList<>();
+    private List<Menu> topMenus = new ArrayList<Menu>();
 
     private String mealLocationText = "";
     private String mealRestaurant = "";
@@ -146,36 +148,27 @@ public class ResultFragment extends Fragment {
     }
 
     private String calculateMealRecommendation(double[] scores) {
-        String jsonMenuData = loadJsonData();
-        if (jsonMenuData == null) return "추천 학식을 불러오는 중 오류 발생";
+        List<String> rankedLocations = getRankedLocationsByDistance();
 
-        try {
-            JSONArray menuArray = new JSONArray(jsonMenuData);
+        // MenuRepository를 사용하여 메뉴 데이터 처리
+        MenuRepository menuRepository = MenuRepository.getInstance(requireContext());
+        List<Menu> sortedMenus = menuRepository.calculateMatchScores(scores, rankedLocations);
 
-            List<String> rankedLocations = getRankedLocationsByDistance();
+        // 상위 6개의 메뉴 저장
+        topMenus.clear();
+        topMenus.addAll(sortedMenus.subList(0, Math.min(6, sortedMenus.size())));
 
-            for (int i = 0; i < menuArray.length(); i++) {
-                JSONObject menuItem = menuArray.getJSONObject(i);
-                menuItem.put("matchscore", calculateMatchScore(menuItem, scores, rankedLocations));
-                menuList.add(menuItem);
-            }
-
-            menuList.sort(Comparator.comparingDouble(menuItem -> {
-                try {
-                    return menuItem.getDouble("matchscore");
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-            }));
-
-            topMenus.addAll(menuList.subList(0, Math.min(6, menuList.size())));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return "추천 학식을 불러오는 중 오류 발생";
+        // 최적의 메뉴 반환
+        Menu bestMatch = menuRepository.findBestMatch();
+        if (bestMatch != null) {
+            mealLocationText = bestMatch.getLocation();
+            mealRestaurant = bestMatch.getRestaurant();
+            return bestMatch.getMenuName();
         }
 
-        return findMenuWithLowestLastScore(topMenus);
+        return "추천 학식을 찾을 수 없습니다.";
     }
+
 
     private double calculateMatchScore(JSONObject menuItem, double[] scores, List<String> rankedLocations) throws JSONException {
         JSONArray menuScoresArray = menuItem.getJSONArray("scores");
