@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public class ResultFragment extends Fragment {
 
@@ -157,14 +158,24 @@ public class ResultFragment extends Fragment {
         // 상위 6개의 메뉴 저장
         topMenus.clear();
         topMenus.addAll(sortedMenus.subList(0, Math.min(6, sortedMenus.size())));
+        if (!topMenus.isEmpty()) {
+            int randomIndex = new Random().nextInt(topMenus.size()); // 0부터 topMenus.size() - 1까지 랜덤 인덱스 생성
+            Menu randomMenu = topMenus.get(randomIndex);
+
+            // 랜덤 선택된 메뉴 정보 저장
+            mealLocationText = randomMenu.getLocation();
+            mealRestaurant = randomMenu.getRestaurant();
+            return randomMenu.getMenuName();
+        }
+
 
         // 최적의 메뉴 반환
-        Menu bestMatch = menuRepository.findBestMatch();
-        if (bestMatch != null) {
-            mealLocationText = bestMatch.getLocation();
-            mealRestaurant = bestMatch.getRestaurant();
-            return bestMatch.getMenuName();
-        }
+//        Menu bestMatch = menuRepository.findBestMatch();
+//        if (bestMatch != null) {
+//            mealLocationText = bestMatch.getLocation();
+//            mealRestaurant = bestMatch.getRestaurant();
+//            return bestMatch.getMenuName();
+//        }
 
         return "추천 학식을 찾을 수 없습니다.";
     }
@@ -182,9 +193,6 @@ public class ResultFragment extends Fragment {
         String location = menuItem.getString("location");
         int rank = rankedLocations.indexOf(location); // 거리 순위에 따라 가중치 결정
         double distanceWeight = (rank >= 0) ? 11 - rank : 1; // 순위가 없으면 최소 가중치(1)
-        if(rank == 1){
-            matchScore = 0;
-        }
         return matchScore / distanceWeight; // 가중치를 나누어 점수에 반영
     }
     private List<String> getRankedLocationsByDistance() {
@@ -241,21 +249,16 @@ public class ResultFragment extends Fragment {
             result[i] = jsonArray.getDouble(i);
         }
 
-        double cost = result[0];
-        result[0] = (cost - 25) * ((5 - (-5)) / (200.0 - 25)) + (-5);
-        result[0] = -result[0];
+
+
+        if (result[0] > 75) result[0] = -2;
+        else if (result[0] > 70) result[0] = -1;
+        else if (result[0] > 65) result[0] = 0;
+        else if (result[0] > 60) result[0] = 1;
+        else result[0] = 2;
+
+
         return result;
     }
 
-    private String loadJsonData() {
-        AssetManager assetManager = requireContext().getAssets();
-        try (InputStream inputStream = assetManager.open("menus.json")) {
-            byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
-            return new String(buffer, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

@@ -49,10 +49,6 @@ public class MenuRepository {
         return new String(buffer, "UTF-8");
     }
 
-    public List<Menu> getAllMenus() {
-        return new ArrayList<>(menus); // 복사본 반환
-    }
-
     public List<Menu> calculateMatchScores(double[] userScores, List<String> rankedLocations) {
         for (Menu menu : menus) {
             double matchScore = calculateMatchScore(menu, userScores, rankedLocations);
@@ -73,11 +69,5 @@ public class MenuRepository {
         int rank = rankedLocations.indexOf(menu.getLocation());
         double distanceWeight = (rank >= 0) ? 11 - rank : 1; // 거리 가중치
         return matchScore / distanceWeight;
-    }
-
-    public Menu findBestMatch() {
-        return menus.stream()
-                .min(Comparator.comparingDouble(Menu::getMatchScore))
-                .orElse(null);
     }
 }
