@@ -190,7 +190,7 @@ public class ResultFragment extends Fragment {
 
                 // 메뉴의 점수 배열
                 JSONArray menuScoresArray = menuItem.getJSONArray("scores");
-                int[] menuScores = jsonArrayToIntArray(menuScoresArray);
+                double[] menuScores = jsonArrayToDoubleArray(menuScoresArray);
                 double matchScore = 0;
 
                 // 점수 유사도 계산 (예: 내적 계산)
@@ -272,13 +272,13 @@ public class ResultFragment extends Fragment {
     }
 
 
-    private int[] jsonArrayToIntArray(JSONArray jsonArray) throws JSONException {
-        int[] result = new int[jsonArray.length()];
+    private double[] jsonArrayToDoubleArray(JSONArray jsonArray) throws JSONException {
+        double[] result = new double[jsonArray.length()];
         for (int i = 0; i < jsonArray.length(); i++) {
-            result[i] = jsonArray.getInt(i);
+            result[i] = (double)jsonArray.getInt(i);
         }
         //여기서는 첫 번째 인수인 가격을 -5와 5 사이로 만들것임.
-        int cost=result[0];
+        double cost=result[0];
         result[0]=(cost - 25) * ((5 - (-5)) / (200 - 25)) + (-5);
         result[0]=-result[0];
         return result;
