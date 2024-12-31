@@ -47,7 +47,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-
+        showCurrentLocation();
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
