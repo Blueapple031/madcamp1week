@@ -40,7 +40,7 @@ public class QuestionFragment extends Fragment {
     private List<Question> randomQuestions; // questions 중에서 선택된 8개의 랜덤 질문
     private int currentQuestionIndex = 0; // 현재 질문 인덱스
     private final int totalQuestions = 8; // 총 질문 수
-    private double[] userScores = new double[8]; // 사용자 수치 데이터
+    private double[] userScores = new double[7]; // 사용자 수치 데이터
 
     @Nullable
     @Override
@@ -51,6 +51,9 @@ public class QuestionFragment extends Fragment {
         questionTextView = view.findViewById(R.id.questiontext);
         option1Button = view.findViewById(R.id.option1Button);
         option2Button = view.findViewById(R.id.option2Button);
+        for(int i=0; i < 7; i++){
+            userScores[i]=0.0;
+        }
 
         // 초기 진행도 설정
         updateProgress();
@@ -64,8 +67,7 @@ public class QuestionFragment extends Fragment {
         showQuestion(currentQuestionIndex);
 
         // 선택지 클릭 이벤트
-        option1Button.setOnClickListener(v -> handleAnswer(0));
-        option2Button.setOnClickListener(v -> handleAnswer(1));
+        
 
         return view;
     }
@@ -168,6 +170,8 @@ public class QuestionFragment extends Fragment {
         questionTextView.setText(question.getQuestion());
         option1Button.setText(question.getOption1());
         option2Button.setText(question.getOption2());
+        option1Button.setOnClickListener(v -> handleAnswer(0));
+        option2Button.setOnClickListener(v -> handleAnswer(1));
     }
 
     private void handleAnswer(int optionIndex) {
@@ -175,7 +179,7 @@ public class QuestionFragment extends Fragment {
         int[] scoreImpact = optionIndex == 0 ? question.getOption1Impact() : question.getOption2Impact();
 
         for (int i = 0; i < userScores.length; i++) {
-            userScores[i] += scoreImpact[i];
+            userScores[i] += (double)scoreImpact[i];
         }
 
         currentQuestionIndex++;

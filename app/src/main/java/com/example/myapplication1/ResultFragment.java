@@ -44,7 +44,7 @@ public class ResultFragment extends Fragment {
     private List<JSONObject> topMenus = new ArrayList<>();
     private String meallocation = "";
     private String mealrestaurant = "";
-    String recommendedMeal = "";
+    private String recommendedMeal = "";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class ResultFragment extends Fragment {
         loadingBar.setVisibility(ProgressBar.GONE);
 
         // 추천 학식 계산
-        String recommendedMeal = calculateMealRecommendation(userScores);
+        recommendedMeal = calculateMealRecommendation(userScores);
 
         // 결과 표시
         resultText.setText("추천 학식 결과:");
@@ -194,7 +194,7 @@ public class ResultFragment extends Fragment {
                 double matchScore = 0;
 
                 // 점수 유사도 계산 (예: 내적 계산)
-                for (int j = 0; j < scores.length-1; j++) {
+                for (int j = 0; j < scores.length; j++) {
                     matchScore += Math.pow(scores[j] - menuScores[j], 2);
                 }
 
