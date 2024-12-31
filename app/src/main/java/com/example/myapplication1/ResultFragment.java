@@ -23,6 +23,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 public class ResultFragment extends Fragment {
@@ -36,6 +39,11 @@ public class ResultFragment extends Fragment {
     private Button mapButton;
 
     private double[] userScores; // 사용자 점수 배열
+    private List<JSONObject> menuList = new ArrayList<>();
+    private List<JSONObject> topMenus = new ArrayList<>();
+    private String meallocation = "";
+    private String mealrestaurant = "";
+    String recommendedMeal = "";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,7 +75,7 @@ public class ResultFragment extends Fragment {
         return view;
     }
 
-    private void showResult() {
+    private void showResult()  {
         // ProgressBar 숨기기
         loadingBar.setVisibility(ProgressBar.GONE);
 
@@ -77,6 +85,7 @@ public class ResultFragment extends Fragment {
         // 결과 표시
         resultText.setText("추천 학식 결과:");
         mealResult.setText(recommendedMeal);
+        mealLocation.setText(meallocation + " " + mealrestaurant);
         backButton.setVisibility(Button.VISIBLE);
         mapButton.setVisibility(Button.VISIBLE);
         mealResult.setVisibility(TextView.VISIBLE);
@@ -97,13 +106,14 @@ public class ResultFragment extends Fragment {
 
     private String calculateMealRecommendation(double[] scores) {
         // JSON 데이터에서 학식 메뉴 로드
+
         String jsonMenuData = loadJsonData();
-        String recommendedMeal = "";
-        String secondrecommendedMeal = "";
+
+        //String secondrecommendedMeal = "";
 
         try {
             JSONArray menuArray = new JSONArray(jsonMenuData);
-            double minDistance=Double.MAX_VALUE;
+            //double minDistance=Double.MAX_VALUE;
             //double secondminDistance = Double.MAX_VALUE;
 
             for (int i = 0; i < menuArray.length(); i++) {
@@ -115,32 +125,83 @@ public class ResultFragment extends Fragment {
                 double matchScore = 0;
 
                 // 점수 유사도 계산 (예: 내적 계산)
-                for (int j = 0; j < scores.length; j++) {
+                for (int j = 0; j < scores.length-1; j++) {
                     matchScore += Math.pow(scores[j] - menuScores[j], 2);
                 }
 
-                // 최고 점수를 가진 메뉴를 추천
-                if (matchScore < minDistance) {
-                    minDistance = matchScore;
-                    recommendedMeal = menuItem.getString("menu");
-                }
-                else if(matchScore == minDistance){
-                    //secondminDistance=matchScore;
-                    secondrecommendedMeal=menuItem.getString("menu");
-                }
-                Random random = new Random();
-                if(random.nextBoolean()){
-                    recommendedMeal=secondrecommendedMeal;
-                }
+                menuItem.put("matchscore", matchScore);
+                menuList.add(menuItem);
 
+                // 최고 점수를 가진 메뉴를 추천
+//                if (matchScore < minDistance) {
+//                    minDistance = matchScore;
+//                    recommendedMeal = menuItem.getString("menu");
+//                }
+//                else if(matchScore == minDistance){
+//                    //secondminDistance=matchScore;
+//                    secondrecommendedMeal=menuItem.getString("menu");
+//                }
+//                Random random = new Random();
+//                if(random.nextBoolean()){
+//                    recommendedMeal=secondrecommendedMeal;
+            //}
+            }
+            menuList.sort(Comparator.comparingDouble(menuItem -> {
+                try {
+                    return menuItem.getDouble("matchscore");
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }));
+            for (int i = 0; i < Math.min(6, menuList.size()); i++) {
+                topMenus.add(menuList.get(i));
             }
         } catch (Exception e) {
             e.printStackTrace();
             recommendedMeal = "추천 학식을 불러오는 중 오류 발생";
         }
 
-        return recommendedMeal;
+        return findMenuWithLowestLastScore(topMenus);
     }
+
+    // topMenus에서 가장 마지막 점수가 낮은 메뉴를 찾는 메서드
+    private String findMenuWithLowestLastScore(List<JSONObject> topMenus){
+        JSONObject lowestMenu = null;
+        double minLastScore = Double.MAX_VALUE; // 매우 큰 값으로 초기화
+
+        for (JSONObject menu : topMenus) {
+            try {
+                // scores 배열 가져오기
+                JSONArray scores = menu.getJSONArray("scores");
+                // 마지막 점수 가져오기
+                double lastScore = scores.getDouble(scores.length() - 1);
+
+                // 최소값 비교
+                if (lastScore < minLastScore) {
+                    minLastScore = lastScore;
+                    lowestMenu = menu;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            meallocation=lowestMenu.getString("location");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            mealrestaurant=lowestMenu.getString("restaurant");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            return lowestMenu.getString("menu");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     private int[] jsonArrayToIntArray(JSONArray jsonArray) throws JSONException {
         int[] result = new int[jsonArray.length()];

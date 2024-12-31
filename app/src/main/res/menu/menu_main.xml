@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_one"
+        android:title="XML의 귀재 김예린"
+        android:fontFamily="@font/bmhannaair_ttf"/>
+    <item
+        android:id="@+id/action_two"
+        android:title="Git의 마법사 김세엽"
+        android:fontFamily="@font/bmhannaair_ttf"/>
+</menu>

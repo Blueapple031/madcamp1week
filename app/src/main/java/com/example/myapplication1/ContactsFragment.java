@@ -32,9 +32,9 @@ public class ContactsFragment extends Fragment {
         List<Contact> contactList = readContactsFromJson();
 
         // RecyclerView 초기화
-//        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setAdapter(new ContactAdapter(contactList));
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new ContactAdapter(contactList));
 
         return view;
     }
@@ -45,7 +45,7 @@ public class ContactsFragment extends Fragment {
         List<Contact> contactList = new ArrayList<>();
         AssetManager assetManager= getContext().getAssets();
         try {
-            InputStream inputStream = assetManager.open("contacts.json");
+            InputStream inputStream = assetManager.open("menus.json");
             int size = inputStream.available();
             byte[] buffer = new byte[size];
             inputStream.read(buffer);
@@ -55,8 +55,8 @@ public class ContactsFragment extends Fragment {
             JSONArray jsonArray = new JSONArray(json);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String name = jsonObject.getString("name");
-                String phone = jsonObject.getString("phone");
+                String name = jsonObject.getString("menu");
+                String phone = jsonObject.getString("restaurant");
                 contactList.add(new Contact(name, phone));
             }
         } catch (Exception e) {

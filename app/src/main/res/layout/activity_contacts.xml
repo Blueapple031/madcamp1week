@@ -34,6 +34,5 @@
         android:clipToPadding="false"
         android:scrollbars="vertical" />
 
-    <include layout="@layout/activity_frame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

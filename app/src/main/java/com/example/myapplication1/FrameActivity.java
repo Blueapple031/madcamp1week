@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,20 +32,14 @@ public class FrameActivity extends AppCompatActivity{
             replaceFragment(new MapFragment());
         }
 
-    //Home 버튼 클릭 시 HomeActivity로 이동
+    //Home 버튼 클릭 시 mapActivity로 이동
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 replaceFragment(new MapFragment());
             }
         });
-//        btnMenu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(FrameActivity.this, HomeActivity.class); //Menu 만들면서 넣어야 함!!
-//                startActivity(intent);
-//            }
-//        });
+        btnMenu.setOnClickListener(view -> showPopupMenu(view));
         btnnubzukki.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,13 +56,12 @@ public class FrameActivity extends AppCompatActivity{
                 transaction.commit();
             }
         });
-//        btnContacts.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(FrameActivity.this, ContactsActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        btnContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new ContactsFragment());
+            }
+        });
 //        btnGallery.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -82,5 +77,28 @@ public class FrameActivity extends AppCompatActivity{
                 .replace(R.id.fragment_container, fragment) // frameContent는 FrameLayout ID
                 .addToBackStack(null) // 뒤로 가기 기능 지원
                 .commit();
+    }
+
+    private void showPopupMenu(View view) {
+        // PopupMenu 생성
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
+
+        // 메뉴 클릭 이벤트 처리
+//        popupMenu.setOnMenuItemClickListener(menuItem -> {
+//            switch (menuItem.getItemId()) {
+//                case R.id.action_one:
+//                    Toast.makeText(this, "Action 1 clicked", Toast.LENGTH_SHORT).show();
+//                    return true;
+//                case R.id.action_two:
+//                    Toast.makeText(this, "Action 2 clicked", Toast.LENGTH_SHORT).show();
+//                    return true;
+//                default:
+//                    return false;
+//            }
+//        });
+
+        // 메뉴 표시
+        popupMenu.show();
     }
 }

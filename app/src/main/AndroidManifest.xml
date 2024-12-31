@@ -17,7 +17,7 @@
         tools:targetApi="31">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD9dxzipoI0g5kwZo-ErfMYcMfxryJP1Ys"/>
+            android:value="AIzaSyAbLGZNTTl8hwDSV8KpHnrUqu_PAUI9OFc"/>
         <activity
             android:name="com.example.myapplication1.FrameActivity"
             android:exported="true">
