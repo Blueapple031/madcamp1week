@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
 import com.example.myapplication1.models.Building;
+import com.example.myapplication1.repository.BuildingRepository;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,27 +33,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-
-    private final List<Building> buildings = Arrays.asList(
-            new Building("카이마루", new LatLng(36.3739, 127.3592), "별리달리, 더큰식탁, 리틀하노이, 오니기리와 이규동, 웰차이, 캠토토스트, 중앙급식", R.drawable.kaimaru),
-            new Building("장영신 학생회관", new LatLng(36.3733, 127.3605), "퀴즈노스", R.drawable.jangyungsin),
-            new Building("서측식당", new LatLng(36.3669, 127.3605), "서맛골, 대덕동네 피자, BHC", R.drawable.west_dining),
-            new Building("태울관", new LatLng(36.373, 127.36), "제순식당, 역전우동, 인생설렁탕", R.drawable.taeul),
-            new Building("정문술 빌딩", new LatLng(36.3712, 127.3623), "서브웨이", R.drawable.jungmun_building),
-            new Building("매점 건물", new LatLng(36.3741, 127.3598), "풀빛마루, 매점", R.drawable.maejum),
-            new Building("교직원회관", new LatLng(36.3694, 127.3634), "동맛골, 패컬티 클럽", R.drawable.professor_castle),
-            new Building("세종관", new LatLng(36.3711, 127.367), "매점", R.drawable.sejong),
-            new Building("희망/다솜관", new LatLng(36.3683, 127.3569), "매점", R.drawable.hope_dasom),
-            new Building("나들/여울관", new LatLng(36.3671, 127.3572), "매점", R.drawable.nadle_yuul),
-            new Building("미르/나래관", new LatLng(36.3703, 127.3558), "매점", R.drawable.mir_narae)
-    );
-
     private final List<Marker> markerList = new ArrayList<>();
 
     @Nullable
@@ -62,7 +47,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-
 
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -83,6 +67,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
+        List<Building> buildings = BuildingRepository.getInstance().getBuildings();
         for (Building building : buildings) {
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(building.getLocation())
@@ -111,14 +96,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void calculateDistances(Location currentLocation) {
+        // BuildingRepository를 통해 모든 건물의 거리 업데이트
+        BuildingRepository.getInstance().updateDistances(currentLocation);
+
+        // 마커에 거리 정보 반영
+        List<Building> buildings = BuildingRepository.getInstance().getBuildings();
         for (Building building : buildings) {
-            Location buildingLocation = new Location("");
-            buildingLocation.setLatitude(building.getLocation().latitude);
-            buildingLocation.setLongitude(building.getLocation().longitude);
-
-            float distance = currentLocation.distanceTo(buildingLocation);
-            building.setDistance(distance);
-
             for (Marker marker : markerList) {
                 if (marker.getTitle().equals(building.getName())) {
                     marker.setSnippet(building.getUpdatedDetails());
@@ -155,9 +138,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             title.setText(marker.getTitle());
             snippet.setText(marker.getSnippet());
 
-            String placeName = marker.getTitle();
-            int imageResId = getImageResource(placeName);
-            imageView.setImageResource(imageResId != 0 ? imageResId : R.drawable.default_image);
+            Building building = BuildingRepository.getInstance().getBuildingByName(marker.getTitle());
+            if (building != null) {
+                imageView.setImageResource(building.getImageResource());
+            } else {
+                imageView.setImageResource(R.drawable.default_image);
+            }
         }
 
         @Override
@@ -171,13 +157,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             return null;
         }
     }
-
-    private int getImageResource(String placeName) {
-        for (Building building : buildings) {
-            if (building.getName().equals(placeName)) {
-                return building.getImageResource();
-            }
-        }
-        return R.drawable.default_image;
-    }
 }
+

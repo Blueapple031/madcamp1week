@@ -67,7 +67,6 @@ public class QuestionFragment extends Fragment {
         showQuestion(currentQuestionIndex);
 
         // 선택지 클릭 이벤트
-        
 
         return view;
     }
