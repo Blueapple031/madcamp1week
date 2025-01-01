@@ -17,6 +17,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         this.contactList = contactList;
     }
 
+    public void updateList(List<Contact> newList) {
+        this.contactList = newList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -28,7 +33,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         Contact contact = contactList.get(position);
-        holder.nameTextView.setText(contact.getName());
+        holder.nameTextView.setText(contact.getName() + "\n" + contact.getCost()+"원");
         holder.phoneTextView.setText(contact.getPhone());
     }
 
