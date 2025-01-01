@@ -33,7 +33,7 @@
         android:fontFamily="@font/bmhannaair_ttf"/>
     <item
         android:id="@+id/action_two"
-        android:title="개발자 2: 김세엽(blueapple0301)"
+        android:title="개발자 2: 김세엽(Blueapple031)"
         android:textSize="30sp"
         android:textStyle="bold"
         android:textColor="@color/black"
