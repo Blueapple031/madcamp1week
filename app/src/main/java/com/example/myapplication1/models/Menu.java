@@ -56,6 +56,10 @@ public class Menu {
         return new Menu(location, restaurant, menuName, scores);
     }
 
+    public static double getPrice(double value) {
+        return (value - 25) * (10.0 / 175.0) - 5;
+    }
+
     @Override
     public String toString() {
         return "Menu{" +
@@ -66,4 +70,5 @@ public class Menu {
                 ", matchScore=" + matchScore +
                 '}';
     }
+
 }

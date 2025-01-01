@@ -55,19 +55,22 @@ public class MenuRepository {
             menu.setMatchScore(matchScore);
         }
         menus.sort(Comparator.comparingDouble(Menu::getMatchScore));
-        return new ArrayList<>(menus); // 정렬된 메뉴 리스트 반환
+        return new ArrayList<>(menus.subList(0, Math.min(6, menus.size()))); // 상위 6개 메뉴 반환
     }
+
 
     private double calculateMatchScore(Menu menu, double[] userScores, List<String> rankedLocations) {
         double matchScore = 0;
         double[] menuScores = menu.getScores();
 
         for (int i = 0; i < userScores.length; i++) {
-            matchScore += Math.pow(userScores[i] - menuScores[i], 2);
+            double mappedMenuScore = (i == 0) ? Menu.getPrice(menuScores[i]) : menuScores[i]; // 가격 지수만 매핑
+            matchScore += Math.pow(userScores[i] - mappedMenuScore, 2);
         }
 
         int rank = rankedLocations.indexOf(menu.getLocation());
         double distanceWeight = (rank >= 0) ? 11 - rank : 1; // 거리 가중치
         return matchScore / distanceWeight;
     }
+
 }

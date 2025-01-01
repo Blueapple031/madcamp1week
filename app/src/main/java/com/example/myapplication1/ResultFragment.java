@@ -155,12 +155,9 @@ public class ResultFragment extends Fragment {
         MenuRepository menuRepository = MenuRepository.getInstance(requireContext());
         List<Menu> sortedMenus = menuRepository.calculateMatchScores(scores, rankedLocations);
 
-        // 상위 6개의 메뉴 저장
-        topMenus.clear();
-        topMenus.addAll(sortedMenus.subList(0, Math.min(6, sortedMenus.size())));
-        if (!topMenus.isEmpty()) {
-            int randomIndex = new Random().nextInt(topMenus.size()); // 0부터 topMenus.size() - 1까지 랜덤 인덱스 생성
-            Menu randomMenu = topMenus.get(randomIndex);
+        if (!sortedMenus.isEmpty()) {
+            int randomIndex = new Random().nextInt(sortedMenus.size()); // 0부터 topMenus.size() - 1까지 랜덤 인덱스 생성
+            Menu randomMenu = sortedMenus.get(randomIndex);
 
             // 랜덤 선택된 메뉴 정보 저장
             mealLocationText = randomMenu.getLocation();
@@ -179,22 +176,6 @@ public class ResultFragment extends Fragment {
 
         return "추천 학식을 찾을 수 없습니다.";
     }
-
-
-    private double calculateMatchScore(JSONObject menuItem, double[] scores, List<String> rankedLocations) throws JSONException {
-        JSONArray menuScoresArray = menuItem.getJSONArray("scores");
-        double[] menuScores = jsonArrayToDoubleArray(menuScoresArray);
-
-        double matchScore = 0;
-        for (int j = 0; j < scores.length; j++) {
-            matchScore += Math.pow(scores[j] - menuScores[j], 2);
-        }
-
-        String location = menuItem.getString("location");
-        int rank = rankedLocations.indexOf(location); // 거리 순위에 따라 가중치 결정
-        double distanceWeight = (rank >= 0) ? 11 - rank : 1; // 순위가 없으면 최소 가중치(1)
-        return matchScore / distanceWeight; // 가중치를 나누어 점수에 반영
-    }
     private List<String> getRankedLocationsByDistance() {
         // 거리 업데이트 및 정렬
         List<Building> buildings = BuildingRepository.getInstance().getBuildings();
@@ -208,56 +189,11 @@ public class ResultFragment extends Fragment {
         return rankedLocations;
     }
 
-
-    private String findMenuWithLowestLastScore(List<JSONObject> topMenus) {
-        JSONObject lowestMenu = null;
-        double minLastScore = Double.MAX_VALUE;
-
-        for (JSONObject menu : topMenus) {
-            try {
-                JSONArray scores = menu.getJSONArray("scores");
-                double lastScore = scores.getDouble(scores.length() - 1);
-
-                String location = menu.getString("location");
-                double distance = BuildingRepository.getInstance().getDistanceToBuilding(location);
-                lastScore *= (distance < 100 ? 0.8 : 1.2);
-
-                if (lastScore < minLastScore) {
-                    minLastScore = lastScore;
-                    lowestMenu = menu;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (lowestMenu != null) {
-            try {
-                mealLocationText = lowestMenu.getString("location");
-                mealRestaurant = lowestMenu.getString("restaurant");
-                return lowestMenu.getString("menu");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return "추천 학식을 찾을 수 없습니다.";
-    }
-
     private double[] jsonArrayToDoubleArray(JSONArray jsonArray) throws JSONException {
         double[] result = new double[jsonArray.length()];
         for (int i = 0; i < jsonArray.length(); i++) {
             result[i] = jsonArray.getDouble(i);
         }
-
-
-
-        if (result[0] > 75) result[0] = -2;
-        else if (result[0] > 70) result[0] = -1;
-        else if (result[0] > 65) result[0] = 0;
-        else if (result[0] > 60) result[0] = 1;
-        else result[0] = 2;
-
-
         return result;
     }
 
