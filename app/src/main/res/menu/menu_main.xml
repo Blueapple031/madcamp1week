@@ -2,10 +2,64 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_one"
-        android:title="XML의 귀재 김예린"
+        android:title="개발자 1: 김예린(scala0601)"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:fontFamily="@font/bmhannaair_ttf"/>
+    <item
+        android:id="@+id/action_one1"
+        android:title="XML의 귀재"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:maxLines="3"
+        android:fontFamily="@font/bmhannaair_ttf"/>
+    <item
+        android:id="@+id/action_one2"
+        android:title="프론트엔드의 달인"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:maxLines="3"
+        android:fontFamily="@font/bmhannaair_ttf"/>
+    <item
+        android:id="@+id/action_one3"
+        android:title="UI디자인 마스터"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:maxLines="3"
         android:fontFamily="@font/bmhannaair_ttf"/>
     <item
         android:id="@+id/action_two"
-        android:title="Git의 마법사 김세엽"
+        android:title="개발자 2: 김세엽(blueapple0301)"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:fontFamily="@font/bmhannaair_ttf"/>
+    <item
+        android:id="@+id/action_two1"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:maxLines="3"
+        android:title="Git의 마법사"
+        android:fontFamily="@font/bmhannaair_ttf"/>
+    <item
+        android:id="@+id/action_two2"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:maxLines="3"
+        android:title="병합의 신(*줄여 말하면 큰일남)"
+        android:fontFamily="@font/bmhannaair_ttf"/>
+    <item
+        android:id="@+id/action_two3"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:maxLines="3"
+        android:title="구글맵 API 제너럴리스트"
         android:fontFamily="@font/bmhannaair_ttf"/>
 </menu>
